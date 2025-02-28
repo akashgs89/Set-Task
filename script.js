@@ -1,5 +1,5 @@
 const checkBoxList = document.querySelectorAll(".check-box")
-const inputFields = document.querySelectorAll(".goal")
+const inputFields = document.querySelectorAll(".task")
 const errorLable = document.querySelector(".error-lable")
 const progressBar = document.querySelector(".progress-bar")
 const progressValue = document.querySelector(".progrees-value")
@@ -7,11 +7,15 @@ const progressValue = document.querySelector(".progrees-value")
 
 
 const allTask = JSON.parse(localStorage.getItem('allTask')) || {}
-let completedTaskCount = Object.values(allTask).filter((Task) => Task.completed).length
-progressValue.style.width = `${completedTaskCount / 3* 100}%`
-progressValue.firstElementChild.innertText = `${completedTaskCount}/3 completed`
+
+let completedTaskCount = Object.values(allTask).filter((task) => task.completed).length
 
 
+progressValue.style.width = `${(completedTaskCount / inputFields.length)* 100}%`
+
+progressValue.firstElementChild.innertText = `${completedTaskCount}/${inputFields.length} completed`
+
+// progressLable.innertText = 
 
 checkBoxList.forEach((checkbox) => {
   checkbox.addEventListener('click', (e) => {
@@ -23,10 +27,16 @@ checkBoxList.forEach((checkbox) => {
       checkbox.parentElement.classList.toggle('completed')
     
       const inputId = checkbox.nextElementSibling.id
+
       allTask[inputId].completed = !allTask[inputId].completed
-      completedTaskCount = Object.values(allTask).filter((goal) => goal.completed).length
-      progressValue.style.width = `${completedTaskCount / 3* 100}%`
-      progressValue.firstElementChild.innertText = `${completedTaskCount}/3 completed`
+
+      completedTaskCount = Object.values(allTask).filter((task) => task.completed).length
+
+
+      progressValue.style.width = `${(completedTaskCount / inputFields.length)* 100}%`
+
+      progressValue.firstElementChild.innertText = `${completedTaskCount}/${inputFields.length} completed`
+
       localStorage.setItem('allTask', JSON.stringify(allTask))
 
     } else {
